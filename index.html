@@ -374,7 +374,10 @@ const TEAM_WEBHOOK_URL = "https://services.leadconnectorhq.com/hooks/q19Ltm6yjlZ
     const v = params.get(k), el = $(k);
     if (v && el){ el.value = v; el.classList.add("prefilled"); }
   });
-  ["lead_source","rep","linkedin"].forEach(k => { const v = params.get(k); if (v) $(k).value = v; });
+  const pick = ks => { for (const k of ks){ const v = params.get(k); if (v) return v; } return ""; };
+  $("lead_source").value = pick(["lead_source","em_b2b_lead_source","source","utm_source"]) || "LinkedIn B2B Outreach";
+  $("rep").value = pick(["rep","originating_rep","em_b2b_originating_rep"]) || "Ivan Katrenyak";
+  $("linkedin").value = pick(["linkedin","linkedin_url","em_b2b_linkedin_url","li"]);
   ["role","connection"].forEach(k => { const v = params.get(k); if (v) setSelect(k, v); });
   const hp = (params.get("has_property") || "").toLowerCase();
   if (hp.startsWith("y")) setPath("yes");
