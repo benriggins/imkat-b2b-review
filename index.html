@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free ADU Property Review — IMKAT Homes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0F0F0F; --ink-soft:#54595E; --ink-faint:#8B9096;
+    --cream:#FAF8F3; --paper:#FFFFFF; --line:#E7E2D6;
+    --gold:#D7B285; --gold-deep:#A9784A; --gold-tint:#F4ECDF; --on-gold:#2A1D0F;
+    --err:#B3261E; --err-tint:#FDF1F0;
+    --shadow:0 1px 2px rgba(15,15,15,.05),0 12px 32px rgba(15,15,15,.06);
+  }
+  *,*::before,*::after{ box-sizing:border-box; }
+  body{ margin:0; background:var(--cream); color:var(--ink); font-family:"Montserrat",-apple-system,"Segoe UI",sans-serif; font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased; }
+
+  /* Header band */
+  .top{ background:#0F0F0F; }
+  .top-inner{ max-width:720px; margin:0 auto; padding:12px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+  .logo{ display:block; width:132px; height:48px; overflow:hidden; flex-shrink:0; }
+  .logo img{ display:block; height:82px; width:auto; margin:-17px 0 0 -22px; }
+  .top .tag{ color:#BFBFBF; font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; text-align:right; white-space:nowrap; }
+  @media (max-width:560px){
+    .top-inner{ padding:10px 16px; gap:10px; }
+    .logo{ width:116px; height:42px; } .logo img{ height:72px; margin:-15px 0 0 -19px; }
+    .top .tag{ font-size:9.5px; letter-spacing:.05em; }
+  }
+
+  .hero{ background:#0F0F0F; color:#fff; padding:30px 24px 88px; }
+  .hero-inner{ max-width:720px; margin:0 auto; }
+  .pill{ display:inline-block; background:var(--gold); color:var(--on-gold); font-size:11.5px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; border-radius:60px; padding:7px 14px; }
+  h1{ font-size:clamp(1.9rem,5.4vw,2.8rem); line-height:1.08; font-weight:800; letter-spacing:-0.02em; margin:16px 0 12px; text-wrap:balance; }
+  h1 em{ font-style:normal; color:var(--gold); }
+  .sub{ color:#C9CCCF; font-size:1.05rem; max-width:52ch; margin:0; }
+  .gets{ display:flex; flex-wrap:wrap; gap:10px 28px; margin:22px 0 0; padding:0; list-style:none; }
+  @media (max-width:560px){ .gets{ flex-direction:column; } }
+  .get{ display:flex; align-items:center; gap:10px; font-weight:700; font-size:.95rem; color:#fff; }
+  .get::before{ content:""; width:10px; height:10px; border-radius:50%; background:var(--gold); flex-shrink:0; }
+
+  /* Card + fields */
+  .card{ max-width:720px; margin:-60px auto 0; background:var(--paper); border-radius:20px; box-shadow:var(--shadow); padding:30px 28px 28px; position:relative; }
+  @media (max-width:560px){ .card{ margin:-60px 12px 0; padding:24px 18px; } }
+  .row{ display:grid; grid-template-columns:1fr 1fr; gap:0 14px; }
+  @media (max-width:560px){ .row{ grid-template-columns:1fr; } }
+  .field{ margin-bottom:16px; }
+  label, .q{ display:block; font-weight:700; font-size:.95rem; margin-bottom:7px; }
+  .opt{ font-weight:500; color:var(--ink-faint); font-size:.85rem; }
+  input, select, textarea{ width:100%; font:inherit; font-size:1rem; color:var(--ink); background:var(--cream); border:1.5px solid var(--line); border-radius:12px; padding:13px 14px; transition:border-color .15s; }
+  select{ appearance:none; -webkit-appearance:none; padding-right:40px; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2354595E' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 15px center; }
+  select:invalid, select.empty{ color:var(--ink-faint); }
+  input:focus, select:focus, textarea:focus{ outline:none; border-color:var(--gold); background-color:#fff; }
+  input.prefilled, select.prefilled{ background-color:var(--gold-tint); border-color:#E8D6BA; }
+  textarea{ min-height:84px; resize:vertical; }
+  .divider{ height:1px; background:var(--line); margin:10px 0 22px; }
+
+  /* Inline errors */
+  .err{ display:none; color:var(--err); font-size:.84rem; font-weight:600; margin-top:6px; }
+  .invalid .err{ display:block; }
+  .invalid input, .invalid select, .invalid textarea{ border-color:var(--err); background-color:var(--err-tint); }
+  .invalid .fork button, .invalid .chips button{ border-color:#E7B9B5; }
+  .form-err{ display:none; background:var(--err-tint); border:1.5px solid #E7B9B5; color:var(--err); font-weight:600; font-size:.9rem; border-radius:12px; padding:12px 14px; margin:0 0 14px; }
+  .form-err.show{ display:block; }
+
+  /* Team contacts */
+  .team{ margin:6px 0 18px; }
+  .team .q{ margin-bottom:4px; }
+  .team-note{ color:var(--ink-soft); font-size:.88rem; margin:0 0 12px; }
+  .team-row{ background:var(--cream); border:1.5px solid var(--line); border-radius:14px; padding:14px 14px 2px; margin-bottom:12px; animation:fade .2s ease; }
+  .team-row input{ background-color:#fff; }
+  .team-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+  .team-head strong{ font-size:.8rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--gold-deep); }
+  .remove{ font:inherit; font-size:.86rem; font-weight:700; color:var(--ink-soft); background:none; border:0; padding:4px 2px; cursor:pointer; text-decoration:underline; text-underline-offset:3px; }
+  .remove:hover{ color:var(--err); }
+  .add-team{ font:inherit; font-size:.92rem; font-weight:700; color:var(--ink); background:var(--paper); border:1.5px dashed #D9CBB2; border-radius:60px; padding:10px 18px; cursor:pointer; }
+  .add-team:hover{ border-color:var(--gold); background:var(--gold-tint); }
+  .add-team[hidden]{ display:none; }
+  .team-max{ color:var(--ink-faint); font-size:.84rem; margin:2px 0 0; }
+
+  /* Fork + chips (from reference) */
+  .fork{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:6px; }
+  @media (max-width:560px){ .fork{ grid-template-columns:1fr; } }
+  .fork button{ font:inherit; text-align:left; background:var(--paper); border:2px solid var(--line); border-radius:14px; padding:16px 16px 15px; cursor:pointer; transition:border-color .15s, background .15s; }
+  .fork button .ft{ display:block; font-weight:800; font-size:1rem; color:var(--ink); }
+  .fork button .fd{ display:block; font-size:.86rem; color:var(--ink-soft); margin-top:3px; }
+  .fork button[aria-pressed="true"]{ border-color:var(--gold); background:var(--gold-tint); }
+  .fork button:focus-visible, .chips button:focus-visible, .submit:focus-visible, .add-team:focus-visible, .remove:focus-visible{ outline:2px solid var(--gold-deep); outline-offset:2px; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:8px; }
+  .chips button{ font:inherit; font-size:.92rem; font-weight:600; color:var(--ink); background:var(--paper); border:1.5px solid var(--line); border-radius:60px; padding:10px 16px; cursor:pointer; }
+  .chips button[aria-pressed="true"]{ background:var(--ink); color:#fff; border-color:var(--ink); }
+
+  .branch[hidden]{ display:none; }
+  .branch{ animation:fade .2s ease; }
+  @keyframes fade{ from{ opacity:0; transform:translateY(4px);} to{ opacity:1; transform:none;} }
+  @media (prefers-reduced-motion: reduce){ .branch, .team-row{ animation:none; } }
+
+  .submit{ width:100%; font:inherit; font-weight:800; font-size:1.08rem; background:var(--gold); color:var(--on-gold); border:0; border-radius:60px; padding:17px; cursor:pointer; margin-top:6px; }
+  .submit:hover{ filter:brightness(.97); }
+  .submit:disabled{ opacity:.65; cursor:wait; filter:none; }
+  .fine{ text-align:center; color:var(--ink-faint); font-size:.85rem; margin:12px 0 0; }
+
+  /* Honeypot — invisible to people, tempting to bots */
+  .hp{ position:absolute !important; left:-10000px !important; top:auto; width:1px; height:1px; overflow:hidden; }
+
+  .trust{ max-width:720px; margin:22px auto 50px; display:flex; flex-wrap:wrap; justify-content:center; gap:10px 26px; padding:0 24px; color:var(--ink-soft); font-size:.88rem; font-weight:600; }
+  .trust span::before{ content:"✓"; color:var(--gold-deep); margin-right:7px; font-weight:800; }
+
+  .done{ text-align:center; padding:26px 6px 10px; }
+  .done .check{ width:58px; height:58px; border-radius:50%; background:var(--gold); color:var(--on-gold); display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:800; margin:0 auto 16px; }
+  .done h2{ font-size:1.5rem; margin:0 0 8px; }
+  .done p{ color:var(--ink-soft); margin:0 auto; max-width:44ch; }
+</style>
+</head>
+<body>
+
+<header class="top"><div class="top-inner">
+  <span class="logo"><img src="https://storage.googleapis.com/headquarters_001/ImkatB2BLinkedIn/logo-on-dark.png" alt="IMKAT Homes"></span>
+  <span class="tag">Design · Permits · Construction</span>
+</div></header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <span class="pill">Free ADU Property Review</span>
+    <h1>Send us a property. We'll tell you <em>what it could hold.</em></h1>
+    <p class="sub">For brokers, investors and developers. Our design-build team looks at the lot and gets back to you directly.</p>
+    <ul class="gets">
+      <li class="get">What may fit on the lot</li>
+      <li class="get">What could stand in the way</li>
+      <li class="get">What it takes to build</li>
+    </ul>
+  </div>
+</section>
+
+<main class="card" id="card">
+  <form id="f" novalidate>
+    <div class="form-err" id="form-err" role="alert"></div>
+
+    <div class="row">
+      <div class="field" data-for="first_name"><label for="first_name">First name</label><input id="first_name" name="first_name" autocomplete="given-name"><div class="err">Please add your first name.</div></div>
+      <div class="field" data-for="last_name"><label for="last_name">Last name</label><input id="last_name" name="last_name" autocomplete="family-name"><div class="err">Please add your last name.</div></div>
+    </div>
+    <div class="row">
+      <div class="field" data-for="email"><label for="email">Work email</label><input id="email" name="email" type="email" inputmode="email" autocomplete="email"><div class="err">Please enter a valid email, like name@company.com.</div></div>
+      <div class="field" data-for="phone"><label for="phone">Phone <span class="opt">optional</span></label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel"><div class="err">That phone number looks too short.</div></div>
+    </div>
+    <div class="field" data-for="company_name"><label for="company_name">Company <span class="opt">optional</span></label><input id="company_name" name="company_name" autocomplete="organization"></div>
+
+    <div class="team" id="team">
+      <span class="q">Additional Team Contacts <span class="opt">(Optional)</span></span>
+      <p class="team-note">Add anyone else from your team who should be included in this relationship or future property reviews.</p>
+      <div id="team-rows"></div>
+      <button type="button" class="add-team" id="add-team">+ Add a team contact</button>
+      <p class="team-max" id="team-max" hidden>You can add up to 5 team contacts here. Mention anyone else in the notes below.</p>
+    </div>
+
+    <div class="field" data-for="role">
+      <label for="role">Your role</label>
+      <select id="role" name="role" class="empty">
+        <option value="" selected>Select one</option>
+        <option>Broker or agent</option>
+        <option>Investor or owner</option>
+        <option>Developer</option>
+        <option>Property manager</option>
+        <option>Architect or engineer</option>
+        <option>Other</option>
+      </select>
+      <div class="err">Please pick the role that fits best.</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field" data-for="has_property">
+      <span class="q" id="q-has">Do you have a property for us to look at?</span>
+      <div class="fork" role="group" aria-labelledby="q-has">
+        <button type="button" data-path="yes" data-value="Yes — I have an address" aria-pressed="false"><span class="ft">Yes — I have an address</span><span class="fd">We'll review this one.</span></button>
+        <button type="button" data-path="no" data-value="Not right now — keep me on file" aria-pressed="false"><span class="ft">Not right now — keep me on file</span><span class="fd">We'll be ready for the next one.</span></button>
+      </div>
+      <input type="hidden" id="has_property" name="has_property">
+      <div class="err">Please choose one.</div>
+    </div>
+
+    <div class="branch" id="b-yes" hidden>
+      <div class="field" data-for="property_address" style="margin-top:18px;"><label for="property_address">Property address</label><input id="property_address" name="property_address" placeholder="Street, city" autocomplete="off"><div class="err">Please add the property address.</div></div>
+      <div class="field" data-for="connection">
+        <label for="connection">Your connection to it</label>
+        <select id="connection" name="connection" class="empty">
+          <option value="" selected>Select one</option>
+          <option>Listing / seller side</option>
+          <option>Buyer side</option>
+          <option>I own it / investor</option>
+          <option>Advising a client</option>
+          <option>Just evaluating</option>
+        </select>
+        <div class="err">Please tell us how you're connected to it.</div>
+      </div>
+      <div class="field" data-for="deal_stage">
+        <span class="q" id="q-deal">Where's the deal?</span>
+        <div class="chips" data-single="deal_stage" role="group" aria-labelledby="q-deal">
+          <button type="button" aria-pressed="false">Active — moving now</button>
+          <button type="button" aria-pressed="false">Next few months</button>
+          <button type="button" aria-pressed="false">Early / exploring</button>
+        </div>
+        <input type="hidden" id="deal_stage" name="deal_stage">
+        <div class="err">Please pick where the deal is.</div>
+      </div>
+      <div class="field" data-for="review_focus">
+        <span class="q" id="q-focus">What do you want to know? <span class="opt">optional, pick any</span></span>
+        <div class="chips" data-multi="review_focus" role="group" aria-labelledby="q-focus">
+          <button type="button" aria-pressed="false">How many units could fit</button>
+          <button type="button" aria-pressed="false">Where they'd go</button>
+          <button type="button" aria-pressed="false">What could block it</button>
+          <button type="button" aria-pressed="false">Cost &amp; path to build</button>
+        </div>
+        <input type="hidden" id="review_focus" name="review_focus">
+      </div>
+    </div>
+
+    <div class="branch" id="b-no" hidden>
+      <div class="field" data-for="unit_scale" style="margin-top:18px;">
+        <span class="q" id="q-scale">What size properties do you usually work with?</span>
+        <div class="chips" data-single="unit_scale" role="group" aria-labelledby="q-scale">
+          <button type="button" aria-pressed="false">1–4 units</button>
+          <button type="button" aria-pressed="false">5–30 units</button>
+          <button type="button" aria-pressed="false">30+ / portfolios</button>
+        </div>
+        <input type="hidden" id="unit_scale" name="unit_scale">
+        <div class="err">Please pick the size you usually work with.</div>
+      </div>
+    </div>
+
+    <div class="field" data-for="notes" style="margin-top:4px;"><label for="notes">Anything else we should know? <span class="opt">optional</span></label><textarea id="notes" name="notes"></textarea></div>
+
+    <!-- Hidden attribution (filled from URL) -->
+    <input type="hidden" id="lead_source" name="lead_source">
+    <input type="hidden" id="rep" name="rep">
+    <input type="hidden" id="linkedin" name="linkedin">
+
+    <!-- Honeypot: humans never see this -->
+    <div class="hp" aria-hidden="true"><label for="website">Website</label><input id="website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+
+    <button class="submit" type="submit" id="submit">Get my property review</button>
+    <p class="fine">No cost. No obligation. Someone from IMKAT's team follows up directly.</p>
+  </form>
+</main>
+
+<div class="trust"><span>200+ ADUs designed &amp; built</span><span>Design, permits &amp; construction in-house</span><span>Sacramento &amp; Bay Area</span></div>
+
+<template id="team-tpl">
+  <div class="team-row">
+    <div class="team-head"><strong class="team-label">Team contact</strong><button type="button" class="remove">Remove</button></div>
+    <div class="row">
+      <div class="field" data-k="first_name"><label>First name</label><input data-k="first_name" autocomplete="off"><div class="err">Please add their first name.</div></div>
+      <div class="field" data-k="last_name"><label>Last name</label><input data-k="last_name" autocomplete="off"><div class="err">Please add their last name.</div></div>
+    </div>
+    <div class="row">
+      <div class="field" data-k="email"><label>Work email</label><input data-k="email" type="email" inputmode="email" autocomplete="off"><div class="err">Please enter a valid email for this contact.</div></div>
+      <div class="field" data-k="phone"><label>Phone <span class="opt">optional</span></label><input data-k="phone" type="tel" inputmode="tel" autocomplete="off"><div class="err">That phone number looks too short.</div></div>
+    </div>
+    <div class="field" data-k="title"><label>Title / Role <span class="opt">optional</span></label><input data-k="title" autocomplete="off"></div>
+  </div>
+</template>
+
+<script>
+/* ===== Replace with the GoHighLevel Inbound Webhook URL ===== */
+const TEAM_WEBHOOK_URL = "https://services.leadconnectorhq.com/hooks/q19Ltm6yjlZZlJUuZayE/webhook-trigger/2372b595-6f98-4e29-b335-459dcd1b03eb";
+  const WEBHOOK_URL = "https://services.leadconnectorhq.com/hooks/q19Ltm6yjlZZlJUuZayE/webhook-trigger/9b669c7e-c101-4139-b826-a589ea82b40e";
+/* ============================================================ */
+
+(function(){
+  const MAX_TEAM = 5;
+  const $ = id => document.getElementById(id);
+  const form = $("f"), submitBtn = $("submit"), formErr = $("form-err");
+  const params = new URLSearchParams(location.search);
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  const phoneOk = v => !v || v.replace(/\D/g,"").length >= 7;
+  const val = id => ($(id) ? $(id).value.trim() : "");
+  let path = null; // "yes" | "no"
+
+  /* ---------- Fork (has_property) ---------- */
+  const forkBtns = document.querySelectorAll(".fork button");
+  function setPath(p){
+    path = p;
+    forkBtns.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.path === p)));
+    const chosen = [...forkBtns].find(b => b.dataset.path === p);
+    $("has_property").value = chosen ? chosen.dataset.value : "";
+    $("b-yes").hidden = p !== "yes";
+    $("b-no").hidden = p !== "no";
+    clearErr("has_property");
+  }
+  forkBtns.forEach(b => b.addEventListener("click", () => setPath(b.dataset.path)));
+
+  /* ---------- Chips ---------- */
+  function syncChips(group){
+    const key = group.dataset.single || group.dataset.multi;
+    const on = [...group.querySelectorAll("button")].filter(b => b.getAttribute("aria-pressed") === "true").map(b => b.textContent.trim());
+    $(key).value = on.join(", ");
+    if (on.length) clearErr(key);
+  }
+  document.querySelectorAll(".chips").forEach(group => {
+    const single = group.hasAttribute("data-single");
+    group.querySelectorAll("button").forEach(btn => btn.addEventListener("click", () => {
+      const on = btn.getAttribute("aria-pressed") === "true";
+      if (single) group.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed","false"));
+      btn.setAttribute("aria-pressed", single ? "true" : String(!on));
+      syncChips(group);
+    }));
+  });
+  function setChips(key, raw){
+    const group = document.querySelector(`.chips[data-single="${key}"],.chips[data-multi="${key}"]`);
+    if (!group) return;
+    const norm = s => s.toLowerCase().replace(/[^a-z0-9+]/g,"");
+    const wanted = (group.dataset.multi ? raw.split(",") : [raw]).map(norm).filter(Boolean);
+    group.querySelectorAll("button").forEach(b => {
+      if (wanted.includes(norm(b.textContent))) b.setAttribute("aria-pressed","true");
+    });
+    syncChips(group);
+  }
+
+  /* ---------- Selects: grey placeholder ---------- */
+  document.querySelectorAll("select").forEach(s => {
+    const upd = () => s.classList.toggle("empty", !s.value);
+    s.addEventListener("change", () => { upd(); clearErr(s.id); });
+    upd();
+  });
+  function setSelect(id, raw){
+    const s = $(id); if (!s) return false;
+    const opt = [...s.options].find(o => o.value && o.value.toLowerCase() === raw.toLowerCase());
+    if (opt){ s.value = opt.value; s.classList.remove("empty"); s.classList.add("prefilled"); return true; }
+    return false;
+  }
+
+  /* ---------- Team contacts ---------- */
+  const rowsEl = $("team-rows"), addBtn = $("add-team"), tpl = $("team-tpl");
+  function renumber(){
+    const rows = rowsEl.querySelectorAll(".team-row");
+    rows.forEach((r,i) => {
+      r.querySelector(".team-label").textContent = "Team contact " + (i+1);
+      r.querySelectorAll("input").forEach(inp => {
+        const id = `team_${i+1}_${inp.dataset.k}`;
+        inp.id = id; inp.closest(".field").querySelector("label").htmlFor = id;
+      });
+    });
+    const full = rows.length >= MAX_TEAM;
+    addBtn.hidden = full;
+    $("team-max").hidden = !full;
+  }
+  function addTeamRow(){
+    if (rowsEl.querySelectorAll(".team-row").length >= MAX_TEAM) return;
+    const row = tpl.content.firstElementChild.cloneNode(true);
+    row.querySelector(".remove").addEventListener("click", () => {
+      row.remove(); renumber();
+      if (!addBtn.hidden) addBtn.focus();
+    });
+    row.querySelectorAll("input").forEach(inp => inp.addEventListener("input", () => inp.closest(".field").classList.remove("invalid")));
+    rowsEl.appendChild(row);
+    renumber();
+    row.querySelector('input[data-k="first_name"]').focus();
+  }
+  addBtn.addEventListener("click", addTeamRow);
+  function teamData(){
+    return [...rowsEl.querySelectorAll(".team-row")].map(r => {
+      const o = {};
+      r.querySelectorAll("input").forEach(inp => o[inp.dataset.k] = inp.value.trim());
+      return o;
+    });
+  }
+
+  /* ---------- Prefill from URL ---------- */
+  ["first_name","last_name","email","phone","company_name","property_address","notes"].forEach(k => {
+    const v = params.get(k), el = $(k);
+    if (v && el){ el.value = v; el.classList.add("prefilled"); }
+  });
+  ["lead_source","rep","linkedin"].forEach(k => { const v = params.get(k); if (v) $(k).value = v; });
+  ["role","connection"].forEach(k => { const v = params.get(k); if (v) setSelect(k, v); });
+  const hp = (params.get("has_property") || "").toLowerCase();
+  if (hp.startsWith("y")) setPath("yes");
+  else if (hp.startsWith("n")) setPath("no");
+  else if (params.get("property_address")) setPath("yes");
+  ["deal_stage","review_focus","unit_scale"].forEach(k => { const v = params.get(k); if (v) setChips(k, v); });
+
+  /* ---------- Validation ---------- */
+  function fieldOf(id){ return document.querySelector(`.field[data-for="${id}"]`); }
+  function setErr(field){ if (field) field.classList.add("invalid"); return field; }
+  function clearErr(id){ const f = fieldOf(id); if (f) f.classList.remove("invalid"); }
+  ["first_name","last_name","email","phone","property_address"].forEach(id => $(id).addEventListener("input", () => clearErr(id)));
+
+  function validate(){
+    document.querySelectorAll(".field.invalid").forEach(f => f.classList.remove("invalid"));
+    const bad = [];
+    const need = (id, ok) => { if (!ok) bad.push(setErr(fieldOf(id))); };
+    need("first_name", !!val("first_name"));
+    need("last_name", !!val("last_name"));
+    need("email", EMAIL_RE.test(val("email")));
+    need("phone", phoneOk(val("phone")));
+    rowsEl.querySelectorAll(".team-row").forEach(r => {
+      const g = k => r.querySelector(`input[data-k="${k}"]`).value.trim();
+      const f = k => r.querySelector(`.field[data-k="${k}"]`);
+      if (!g("first_name")) bad.push(setErr(f("first_name")));
+      if (!g("last_name")) bad.push(setErr(f("last_name")));
+      if (!EMAIL_RE.test(g("email"))) bad.push(setErr(f("email")));
+      if (!phoneOk(g("phone"))) bad.push(setErr(f("phone")));
+    });
+    need("role", !!val("role"));
+    need("has_property", !!path);
+    if (path === "yes"){
+      need("property_address", !!val("property_address"));
+      need("connection", !!val("connection"));
+      need("deal_stage", !!val("deal_stage"));
+    } else if (path === "no"){
+      need("unit_scale", !!val("unit_scale"));
+    }
+    return bad;
+  }
+
+  /* ---------- Payloads ---------- */
+  function buildPayloads(){
+    const yes = path === "yes";
+    const team = teamData();
+    const p = new URLSearchParams();
+    p.append("type", "primary");
+    p.append("first_name", val("first_name"));
+    p.append("last_name", val("last_name"));
+    p.append("email", val("email"));
+    p.append("phone", val("phone"));
+    p.append("company_name", val("company_name"));
+    p.append("role", val("role"));
+    p.append("has_property", val("has_property"));
+    p.append("property_address", yes ? val("property_address") : "");
+    p.append("connection", yes ? val("connection") : "");
+    p.append("deal_stage", yes ? val("deal_stage") : "");
+    p.append("review_focus", yes ? val("review_focus") : "");
+    p.append("unit_scale", path === "no" ? val("unit_scale") : "");
+    p.append("notes", val("notes"));
+    p.append("lead_source", val("lead_source"));
+    p.append("rep", val("rep"));
+    p.append("linkedin", val("linkedin"));
+    p.append("team_count", String(team.length));
+    team.forEach((t,i) => {
+      const n = i + 1;
+      p.append(`team_${n}_first_name`, t.first_name);
+      p.append(`team_${n}_last_name`, t.last_name);
+      p.append(`team_${n}_email`, t.email);
+      p.append(`team_${n}_phone`, t.phone);
+      p.append(`team_${n}_title`, t.title);
+    });
+    p.append("team_summary", team.map(t =>
+      [`${t.first_name} ${t.last_name}`.trim(), t.title, t.email, t.phone].filter(Boolean).join(" · ")
+    ).join("\n"));
+    p.append("page_url", location.href);
+
+    const primaryName = `${val("first_name")} ${val("last_name")}`.trim();
+    const teamPosts = team.map(t => {
+      const q = new URLSearchParams();
+      q.append("type", "team");
+      q.append("first_name", t.first_name);
+      q.append("last_name", t.last_name);
+      q.append("email", t.email);
+      q.append("phone", t.phone);
+      q.append("title", t.title);
+      q.append("company_name", val("company_name"));
+      q.append("primary_email", val("email"));
+      q.append("primary_name", primaryName);
+      q.append("property_address", yes ? val("property_address") : "");
+      q.append("lead_source", val("lead_source"));
+      q.append("rep", val("rep"));
+      return q;
+    });
+    return { primary: p, teamPosts };
+  }
+
+  // no-cors => opaque response; any resolved fetch counts as delivered. Only a network failure rejects.
+  const post = (body, url) => fetch(url || WEBHOOK_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(Object.fromEntries(body)) });
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  async function postWithRetry(body, url){
+    try { await post(body, url); }
+    catch (e) { await wait(900); await post(body, url); }
+  }
+
+  function showDone(){
+    const card = $("card");
+    card.innerHTML = '<div class="done" role="status"><div class="check">✓</div><h2>Thanks — we have it.</h2><p>Someone from the IMKAT team will review it and reach out to you directly.</p></div>';
+    card.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+  function showFormErr(msg){ formErr.textContent = msg; formErr.classList.add("show"); formErr.scrollIntoView({ behavior:"smooth", block:"center" }); }
+
+  let sending = false;
+  form.addEventListener("submit", async e => {
+    e.preventDefault();
+    if (sending) return;
+    formErr.classList.remove("show");
+
+    // Honeypot tripped: pretend success, send nothing.
+    if ($("website").value) { showDone(); return; }
+
+    const bad = validate();
+    if (bad.length){
+      const first = bad.find(Boolean);
+      if (first){
+        first.scrollIntoView({ behavior: "smooth", block: "center" });
+        const focusable = first.querySelector("input:not([type=hidden]), select, textarea, button");
+        if (focusable) focusable.focus({ preventScroll: true });
+      }
+      return;
+    }
+    if (!WEBHOOK_URL || WEBHOOK_URL.indexOf("__") === 0){
+      showFormErr("This form isn't connected yet. Please email IMKAT directly and we'll take it from there.");
+      return;
+    }
+
+    sending = true;
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Sending…";
+    const { primary, teamPosts } = buildPayloads();
+    try {
+      await postWithRetry(primary);
+    } catch (err) {
+      sending = false;
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Get my property review";
+      showFormErr("We couldn't send that — please check your connection and try again.");
+      return;
+    }
+    for (const t of (TEAM_WEBHOOK_URL.indexOf("__") === 0 ? [] : teamPosts)){
+      try { await postWithRetry(t, TEAM_WEBHOOK_URL); } catch (err) { console.warn("Team contact post failed", err); }
+    }
+    showDone();
+  });
+})();
+</script>
+</body>
+</html>
